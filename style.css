@@ -15,6 +15,16 @@ body {
 article {
   height: 90% ;
 }
+header {
+  height: 15%;
+}
+section {
+  height: 85%;
+}
 footer {
   height: 10%
+}
+
+svg {
+  background-color: powderblue; /*Prod code*/
 }
