@@ -3,4 +3,6 @@ const svg = d3
   .append("svg")
   .attr("width", "100%")
   .attr("height", "100%");
+
 const xAxis = d3.select("svg").append("g").attr("id", "x-axis");
+const yAxis = d3.select("svg").append("g").attr("id", "y-axis");
