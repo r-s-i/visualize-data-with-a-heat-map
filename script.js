@@ -6,3 +6,40 @@ const svg = d3
 
 const xAxis = d3.select("svg").append("g").attr("id", "x-axis");
 const yAxis = d3.select("svg").append("g").attr("id", "y-axis");
+const baseTemp = 8.66;
+fetch(
+  "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/global-temperature.json"
+)
+  .then((r) => r.json())
+  .then((d) => {
+    console.log(svg._groups[0][0].clientWidth);
+    let xOffset = 0;
+    let yOffset = 0;
+    svg
+      .selectAll("rect")
+      .data(d.monthlyVariance)
+      .enter()
+      .append("rect")
+      .attr("y", (d, i) => {
+        if (i % 12 !== 0) {
+          yOffset += svg._groups[0][0].clientHeight / 12;
+        } else {
+          yOffset = 0;
+        }
+        return yOffset;
+      })
+      .attr("x", (d, i) => {
+        if (i !== 0 && i % 12 === 0) {
+          xOffset += svg._groups[0][0].clientWidth / 263;
+        }
+        console.log("d", d);
+        return xOffset;
+      })
+      .attr("class", "cell")
+      .attr("width", svg._groups[0][0].clientWidth / 263)
+      .attr("height", svg._groups[0][0].clientHeight / 12)
+      .attr("data-month", (d) => d.month)
+      .attr("data-year", (d) => d.year)
+      .attr("data-temp", (d) => d.variance + baseTemp)
+      .style("fill", "black");
+  });
