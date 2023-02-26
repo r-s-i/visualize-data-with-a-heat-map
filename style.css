@@ -1,9 +1,12 @@
 /*Tag selectors:*/
 * {
-  outline: 1px solid red;
+  /*outline: 1px solid red;*/
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+:root {
+ background: darkgray;
 }
 body {
   display: block;
@@ -26,5 +29,5 @@ footer {
 }
 
 svg {
-  background-color: powderblue; /*Prod code*/
+  background-color: black; /*Prod code*/
 }
