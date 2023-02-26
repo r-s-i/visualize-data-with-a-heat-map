@@ -29,5 +29,17 @@ footer {
 }
 
 svg {
-  background-color: black; /*Prod code*/
+  background-color: grey; /*Prod code*/
+  position: relative;
 }
+
+#x-axis text { 
+  transform:translateY(-30px);  
+}
+#y-axis text { 
+  transform: translate(40px, -6px);
+}
+line {
+  transform: rotate(180deg);
+}
+

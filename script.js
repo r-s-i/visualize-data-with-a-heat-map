@@ -3,11 +3,11 @@ const svg = d3
   .append("svg")
   .attr("width", "100%")
   .attr("height", "100%");
-
-const xAxis = d3.select("svg").append("g").attr("id", "x-axis");
-const yAxis = d3.select("svg").append("g").attr("id", "y-axis");
+const svgWidth = svg._groups[0][0].clientWidth;
+const svgHeight = svg._groups[0][0].clientHeight;
 const baseTemp = 8.66; // lowest temp: 1.684, highest: 13.888
 const colors = ["blue", "lightblue", "white", "orange", "red"];
+
 fetch(
   "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/global-temperature.json"
 )
@@ -32,7 +32,6 @@ fetch(
         if (i !== 0 && i % 12 === 0) {
           xOffset += svg._groups[0][0].clientWidth / 263;
         }
-        console.log("d", d);
         return xOffset;
       })
       .attr("class", "cell")
@@ -49,4 +48,48 @@ fetch(
         else if (temp < 11.5) return colors[3];
         else if (temp < 14) return colors[4];
       });
+    addingAxis();
   });
+
+function addingAxis() {
+  // Adding x-axis:
+  const xScale = d3
+    .scaleTime()
+    .range([0, svgWidth])
+    .domain([new Date(1753, 0, 1), new Date(2015, 0, 8)]);
+
+  const xAxis = d3.axisBottom(xScale).ticks(10);
+
+  svg
+    .append("g")
+    .attr("transform", `translate(${0}, ${svgHeight - 30})`)
+    .attr("id", "x-axis")
+    .call(xAxis);
+
+  // Adding y-axis:
+  const yScale = d3
+    .scaleBand()
+    .range([0, svgHeight])
+    .domain([
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ]);
+
+  const yAxis = d3.axisLeft(yScale).ticks(10);
+
+  svg
+    .append("g")
+    .attr("transform", `translate(${0}, ${svgHeight / 24})`)
+    .attr("id", "y-axis")
+    .call(yAxis);
+}
