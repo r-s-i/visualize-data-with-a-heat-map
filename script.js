@@ -49,6 +49,7 @@ fetch(
         else if (temp < 14) return colors[4];
       });
     addingAxis();
+    svg.append("g").attr("id", "legend");
   });
 
 function addingAxis() {
