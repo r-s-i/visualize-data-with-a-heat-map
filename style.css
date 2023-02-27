@@ -37,7 +37,7 @@ svg {
   transform:translateY(-30px);  
 }
 #y-axis text { 
-  transform: translate(40px, -6px);
+  transform: translate(70px, 6px);
 }
 line {
   transform: rotate(180deg);

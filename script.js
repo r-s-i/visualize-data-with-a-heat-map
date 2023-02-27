@@ -71,25 +71,25 @@ function addingAxis() {
     .scaleBand()
     .range([0, svgHeight])
     .domain([
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
+      "January",
+      "February",
+      "March",
+      "April",
       "May",
-      "Jun",
-      "jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
     ]);
 
   const yAxis = d3.axisLeft(yScale).ticks(10);
 
   svg
     .append("g")
-    .attr("transform", `translate(${0}, ${svgHeight / 24})`)
+    .attr("transform", `translate(${0}, ${0})`)
     .attr("id", "y-axis")
     .call(yAxis);
 }
