@@ -127,9 +127,10 @@ function addingLegend(legendWidth) {
     .style("fill", (d, i) => colors[i]);
 }
 function addingTooltip(x, y, w, h, year, month, temp) {
-  const g = svg.append("g").attr("id", "tooltip");
+  const g = svg.append("g").attr("id", "tooltip").attr("data-year", year);
   const tooltip = g
     .append("foreignObject")
+
     .attr("width", w)
     .attr("height", h)
     .html(`<aside id='tooltip'>${year} - ${month} <br> ${temp} ℃ </aside>`)
