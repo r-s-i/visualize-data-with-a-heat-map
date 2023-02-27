@@ -43,3 +43,12 @@ line {
 }
 
 
+#tooltip {
+  display: block;
+  text-align: center;
+  box-sizing: border-box;
+  height: 100%;
+  background: black;
+  color: white;
+}
+

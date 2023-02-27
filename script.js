@@ -47,6 +47,21 @@ fetch(
         else if (temp < 9) return colors[2];
         else if (temp < 11.5) return colors[3];
         else if (temp < 14) return colors[4];
+      })
+      .on("mouseover", (e) => {
+        const y = e.target.y.animVal.value;
+        const x = e.target.x.animVal.value;
+        const year = e.target.__data__.year;
+        const month = e.target.__data__.month;
+        const temp = (e.target.__data__.variance + baseTemp).toFixed(2);
+        e.target.style.outline = "1px black solid";
+        addingTooltip(x, y, 100, 50, year, month, temp);
+      })
+      .on("mouseout", (e) => {
+        e.target.style.outline = "none";
+        const tooltip = d3.select("#tooltip");
+
+        tooltip.remove();
       });
     addingAxis();
     addingLegend(240);
@@ -110,4 +125,13 @@ function addingLegend(legendWidth) {
     .attr("width", legendWidth / 5)
     .attr("height", legendWidth / 5)
     .style("fill", (d, i) => colors[i]);
+}
+function addingTooltip(x, y, w, h, year, month, temp) {
+  const g = svg.append("g").attr("id", "tooltip");
+  const tooltip = g
+    .append("foreignObject")
+    .attr("width", w)
+    .attr("height", h)
+    .html(`<aside id='tooltip'>${year} - ${month} <br> ${temp} ℃ </aside>`)
+    .attr("transform", `translate(${x - w / 2}, ${y - h})`);
 }
