@@ -22,7 +22,7 @@ fetch(
       .append("rect")
       .attr("y", (d, i) => {
         if (i % 12 !== 0) {
-          yOffset += svg._groups[0][0].clientHeight / 12;
+          yOffset += svgHeight / 12;
         } else {
           yOffset = 0;
         }
@@ -30,7 +30,7 @@ fetch(
       })
       .attr("x", (d, i) => {
         if (i !== 0 && i % 12 === 0) {
-          xOffset += svg._groups[0][0].clientWidth / 263;
+          xOffset += svgWidth / 263;
         }
         return xOffset;
       })
@@ -49,12 +49,14 @@ fetch(
         else if (temp < 14) return colors[4];
       })
       .on("mouseover", (e) => {
-        const y = e.target.y.animVal.value;
-        const x = e.target.x.animVal.value;
-        const year = e.target.__data__.year;
-        const month = e.target.__data__.month;
-        const temp = (e.target.__data__.variance + baseTemp).toFixed(2);
-        e.target.style.outline = "1px black solid";
+        const t = e.target;
+        const y = t.y.animVal.value;
+        const x = t.x.animVal.value;
+        const year = t.__data__.year;
+        const month = t.__data__.month;
+        const temp = (t.__data__.variance + baseTemp).toFixed(2);
+
+        t.style.outline = "1px black solid";
         addingTooltip(x, y, 100, 50, year, month, temp);
       })
       .on("mouseout", (e) => {
@@ -68,21 +70,17 @@ fetch(
   });
 
 function addingAxis() {
-  // Adding x-axis:
   const xScale = d3
     .scaleTime()
     .range([0, svgWidth])
     .domain([new Date(1753, 0, 1), new Date(2015, 0, 8)]);
-
   const xAxis = d3.axisBottom(xScale).ticks(10);
-
   svg
     .append("g")
     .attr("transform", `translate(${0}, ${svgHeight - 30})`)
     .attr("id", "x-axis")
     .call(xAxis);
 
-  // Adding y-axis:
   const yScale = d3
     .scaleBand()
     .range([0, svgHeight])
@@ -100,9 +98,7 @@ function addingAxis() {
       "November",
       "December",
     ]);
-
   const yAxis = d3.axisLeft(yScale).ticks(10);
-
   svg
     .append("g")
     .attr("transform", `translate(${0}, ${0})`)
@@ -115,6 +111,7 @@ function addingLegend(legendWidth) {
     .append("g")
     .attr("id", "legend")
     .attr("transform", `translate(${svgWidth / 2 - legendWidth / 2}, 0)`);
+
   legend
     .selectAll("rect")
     .data(colors)
@@ -126,11 +123,12 @@ function addingLegend(legendWidth) {
     .attr("height", legendWidth / 5)
     .style("fill", (d, i) => colors[i]);
 }
+
 function addingTooltip(x, y, w, h, year, month, temp) {
   const g = svg.append("g").attr("id", "tooltip").attr("data-year", year);
+
   const tooltip = g
     .append("foreignObject")
-
     .attr("width", w)
     .attr("height", h)
     .html(`<aside id='tooltip'>${year} - ${month} <br> ${temp} ℃ </aside>`)
