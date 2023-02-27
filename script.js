@@ -49,7 +49,7 @@ fetch(
         else if (temp < 14) return colors[4];
       });
     addingAxis();
-    svg.append("g").attr("id", "legend");
+    addingLegend(240);
   });
 
 function addingAxis() {
@@ -93,4 +93,21 @@ function addingAxis() {
     .attr("transform", `translate(${0}, ${0})`)
     .attr("id", "y-axis")
     .call(yAxis);
+}
+
+function addingLegend(legendWidth) {
+  const legend = svg
+    .append("g")
+    .attr("id", "legend")
+    .attr("transform", `translate(${svgWidth / 2 - legendWidth / 2}, 0)`);
+  legend
+    .selectAll("rect")
+    .data(colors)
+    .enter()
+    .append("rect")
+    .attr("y", 0)
+    .attr("x", (d, i) => (legendWidth / 5) * i)
+    .attr("width", legendWidth / 5)
+    .attr("height", legendWidth / 5)
+    .style("fill", (d, i) => colors[i]);
 }

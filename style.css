@@ -30,7 +30,6 @@ footer {
 
 svg {
   background-color: grey; /*Prod code*/
-  position: relative;
 }
 
 #x-axis text { 
@@ -42,4 +41,5 @@ svg {
 line {
   transform: rotate(180deg);
 }
+
 
