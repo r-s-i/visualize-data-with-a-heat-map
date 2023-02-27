@@ -32,17 +32,6 @@ svg {
   background-color: grey; /*Prod code*/
 }
 
-#x-axis text { 
-  transform:translateY(-30px);  
-}
-#y-axis text { 
-  transform: translate(70px, 6px);
-}
-line {
-  transform: rotate(180deg);
-}
-
-
 #tooltip {
   display: block;
   text-align: center;

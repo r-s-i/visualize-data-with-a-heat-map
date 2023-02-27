@@ -5,6 +5,10 @@ const svg = d3
   .attr("height", "100%");
 const svgWidth = svg._groups[0][0].clientWidth;
 const svgHeight = svg._groups[0][0].clientHeight;
+const svgWidth90 = svgWidth * 0.85;
+const svgHeight90 = svgHeight * 0.85;
+const svgMarginX = svgWidth * 0.075;
+const svgMarginY = svgHeight90 / 12;
 const baseTemp = 8.66; // lowest temp: 1.684, highest: 13.888
 const colors = ["blue", "lightblue", "white", "orange", "red"];
 
@@ -13,8 +17,8 @@ fetch(
 )
   .then((r) => r.json())
   .then((d) => {
-    let xOffset = 0;
-    let yOffset = 0;
+    let xOffset = svgMarginX;
+    let yOffset = svgMarginY;
     svg
       .selectAll("rect")
       .data(d.monthlyVariance)
@@ -22,21 +26,21 @@ fetch(
       .append("rect")
       .attr("y", (d, i) => {
         if (i % 12 !== 0) {
-          yOffset += svgHeight / 12;
+          yOffset += svgHeight90 / 12;
         } else {
-          yOffset = 0;
+          yOffset = svgMarginY;
         }
         return yOffset;
       })
       .attr("x", (d, i) => {
         if (i !== 0 && i % 12 === 0) {
-          xOffset += svgWidth / 263;
+          xOffset += svgWidth90 / 263;
         }
         return xOffset;
       })
       .attr("class", "cell")
-      .attr("width", svg._groups[0][0].clientWidth / 263)
-      .attr("height", svg._groups[0][0].clientHeight / 12)
+      .attr("width", svgWidth90 / 263)
+      .attr("height", svgHeight90 / 12)
       .attr("data-month", (d) => d.month - 1)
       .attr("data-year", (d) => d.year)
       .attr("data-temp", (d) => d.variance + baseTemp)
@@ -72,18 +76,18 @@ fetch(
 function addingAxis() {
   const xScale = d3
     .scaleTime()
-    .range([0, svgWidth])
+    .range([0, svgWidth90])
     .domain([new Date(1753, 0, 1), new Date(2015, 0, 8)]);
   const xAxis = d3.axisBottom(xScale).ticks(10);
   svg
     .append("g")
-    .attr("transform", `translate(${0}, ${svgHeight - 30})`)
+    .attr("transform", `translate(${svgMarginX}, ${svgHeight90 + svgMarginY})`)
     .attr("id", "x-axis")
     .call(xAxis);
 
   const yScale = d3
     .scaleBand()
-    .range([0, svgHeight])
+    .range([0, svgHeight90])
     .domain([
       "January",
       "February",
@@ -101,7 +105,7 @@ function addingAxis() {
   const yAxis = d3.axisLeft(yScale).ticks(10);
   svg
     .append("g")
-    .attr("transform", `translate(${0}, ${0})`)
+    .attr("transform", `translate(${svgMarginX}, ${svgMarginY})`)
     .attr("id", "y-axis")
     .call(yAxis);
 }
