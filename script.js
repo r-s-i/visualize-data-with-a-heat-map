@@ -1,116 +1,121 @@
-const svg = d3
+let svg = d3
   .select("section")
   .append("svg")
   .attr("width", "100%")
   .attr("height", "100%");
-const svgWidth = svg._groups[0][0].clientWidth;
-const svgHeight = svg._groups[0][0].clientHeight;
-const svgWidth90 = svgWidth * 0.8;
-const svgHeight90 = svgHeight * 0.8;
-const svgMarginX = svgWidth * 0.1;
-const svgMarginY = svgHeight * 0.1;
+let svgWidth = svg._groups[0][0].clientWidth;
+let svgHeight = svg._groups[0][0].clientHeight;
+
+let svgWidth90 = svgWidth * 0.8;
+let svgHeight90 = svgHeight * 0.8;
+let svgMarginX = svgWidth * 0.1;
+let svgMarginY = svgHeight * 0.1;
+let xOffset = svgMarginX;
+let yOffset = svgMarginY;
 const baseTemp = 8.66; // lowest temp: 1.684, highest: 13.888
 const colors = ["blue", "lightblue", "white", "orange", "red"];
+
+const xScale = d3
+  .scaleTime()
+  .range([0, svgWidth90])
+  .domain([new Date(1753, 0, 1), new Date(2015, 0, 8)]);
+const xAxis = d3.axisBottom(xScale).ticks(10);
+svg
+  .append("g")
+  .attr("transform", `translate(${svgMarginX}, ${svgHeight90 + svgMarginY})`)
+  .attr("id", "x-axis")
+  .call(xAxis);
+
+const yScale = d3
+  .scaleBand()
+  .range([0, svgHeight90])
+  .domain([
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ]);
+const yAxis = d3.axisLeft(yScale).ticks(10);
+svg
+  .append("g")
+  .attr("transform", `translate(${svgMarginX}, ${svgMarginY})`)
+  .attr("id", "y-axis")
+  .call(yAxis);
 
 fetch(
   "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/global-temperature.json"
 )
   .then((r) => r.json())
   .then((d) => {
-    let xOffset = svgMarginX;
-    let yOffset = svgMarginY;
-    svg
-      .selectAll("rect")
-      .data(d.monthlyVariance)
-      .enter()
-      .append("rect")
-      .attr("y", (d, i) => {
-        if (i % 12 !== 0) {
-          yOffset += svgHeight90 / 12;
-        } else {
-          yOffset = svgMarginY;
-        }
-        return yOffset;
-      })
-      .attr("x", (d, i) => {
-        if (i !== 0 && i % 12 === 0) {
-          xOffset += svgWidth90 / 263;
-        }
-        return xOffset;
-      })
-      .attr("class", "cell")
-      .attr("width", svgWidth90 / 263)
-      .attr("height", svgHeight90 / 12)
-      .attr("data-month", (d) => d.month - 1)
-      .attr("data-year", (d) => d.year)
-      .attr("data-temp", (d) => d.variance + baseTemp)
-      .style("fill", (d) => {
-        let temp = d.variance + baseTemp;
-        if (temp < 4) return colors[0];
-        else if (temp < 6.5) return colors[1];
-        else if (temp < 9) return colors[2];
-        else if (temp < 11.5) return colors[3];
-        else if (temp < 14) return colors[4];
-      })
-      .on("mouseover", (e) => {
-        const t = e.target;
-        const y = t.y.animVal.value;
-        const x = t.x.animVal.value;
-        const year = t.__data__.year;
-        const month = t.__data__.month;
-        const temp = (t.__data__.variance + baseTemp).toFixed(2);
-
-        t.style.outline = "1px black solid";
-        addingTooltip(x, y, 100, 50, year, month, temp);
-      })
-      .on("mouseout", (e) => {
-        e.target.style.outline = "none";
-        const tooltip = d3.select("#tooltip");
-
-        tooltip.remove();
-      });
-    addingAxis();
+    addingCells(d, svgMarginY, svgWidth90, svgHeight90);
     addingLegend(svgMarginY);
   });
 
-function addingAxis() {
-  const xScale = d3
-    .scaleTime()
-    .range([0, svgWidth90])
-    .domain([new Date(1753, 0, 1), new Date(2015, 0, 8)]);
-  const xAxis = d3.axisBottom(xScale).ticks(10);
+function addingCells(d, svgMarginY, svgWidth90, svgHeight90) {
   svg
-    .append("g")
-    .attr("transform", `translate(${svgMarginX}, ${svgHeight90 + svgMarginY})`)
-    .attr("id", "x-axis")
-    .call(xAxis);
+    .selectAll("rect")
+    .data(d.monthlyVariance)
+    .enter()
+    .append("rect")
+    .attr("y", (d, i) => {
+      if (i % 12 !== 0) {
+        yOffset += svgHeight90 / 12;
+      } else {
+        yOffset = svgMarginY;
+      }
+      return yOffset;
+    })
+    .attr("x", (d, i) => {
+      if (i !== 0 && i % 12 === 0) {
+        xOffset += svgWidth90 / 263;
+      }
+      return xOffset;
+    })
+    .attr("class", "cell")
+    .attr("width", svgWidth90 / 263)
+    .attr("height", svgHeight90 / 12)
+    .attr("data-month", (d) => d.month - 1)
+    .attr("data-year", (d) => d.year)
+    .attr("data-temp", (d) => d.variance + baseTemp)
+    .style("fill", (d) => {
+      let temp = d.variance + baseTemp;
+      if (temp < 4) return colors[0];
+      else if (temp < 6.5) return colors[1];
+      else if (temp < 9) return colors[2];
+      else if (temp < 11.5) return colors[3];
+      else if (temp < 14) return colors[4];
+    })
+    .on("mouseover", (e) => {
+      const t = e.target;
+      const y = t.y.animVal.value;
+      const x = t.x.animVal.value;
+      const year = t.__data__.year;
+      const month = t.__data__.month;
+      const temp = (t.__data__.variance + baseTemp).toFixed(2);
 
-  const yScale = d3
-    .scaleBand()
-    .range([0, svgHeight90])
-    .domain([
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ]);
-  const yAxis = d3.axisLeft(yScale).ticks(10);
-  svg
-    .append("g")
-    .attr("transform", `translate(${svgMarginX}, ${svgMarginY})`)
-    .attr("id", "y-axis")
-    .call(yAxis);
+      t.style.outline = "1px black solid";
+      addingTooltip(x, y, 100, 50, year, month, temp);
+    })
+    .on("mouseout", (e) => {
+      e.target.style.outline = "none";
+      const tooltip = d3.select("#tooltip");
+
+      tooltip.remove();
+    });
 }
 
 function addingLegend(legendHeight) {
+  const prevLegend = d3.select("#legend");
+  prevLegend.remove();
+
   const cellWidthHeight = legendHeight * 0.6;
   const legend = svg
     .append("g")
@@ -130,15 +135,11 @@ function addingLegend(legendHeight) {
 
   const xScale = d3
     .scaleThreshold()
-    .range([
-      0,
-      0,
-      cellWidthHeight,
-      cellWidthHeight * 2,
-      cellWidthHeight * 3,
-      cellWidthHeight * 4,
-      cellWidthHeight * 5,
-    ])
+    .range(
+      Array.from({ length: 7 }, (_, i) =>
+        i > 1 ? i * cellWidthHeight - cellWidthHeight : 0
+      )
+    )
     .domain([1.5, 4, 6.5, 9, 11.5, 14]);
   const xAxis = d3.axisBottom(xScale);
   legend
@@ -157,3 +158,48 @@ function addingTooltip(x, y, w, h, year, month, temp) {
     .html(`<aside id='tooltip'>${year} - ${month} <br> ${temp} ℃ </aside>`)
     .attr("transform", `translate(${x - w / 2}, ${y - h})`);
 }
+
+function update() {
+  svgWidth = svg._groups[0][0].clientWidth;
+  svgHeight = svg._groups[0][0].clientHeight;
+
+  svgWidth90 = svgWidth * 0.8;
+  svgHeight90 = svgHeight * 0.8;
+  svgMarginX = svgWidth * 0.1;
+  svgMarginY = svgHeight * 0.1;
+  xOffset = svgMarginX;
+  yOffset = svgMarginY;
+
+  xScale.range([0, svgWidth90]);
+  d3.select("#x-axis")
+    .attr("transform", `translate(${svgMarginX}, ${svgHeight90 + svgMarginY})`)
+    .call(xAxis);
+
+  yScale.range([0, svgHeight90]);
+  d3.select("#y-axis")
+    .attr("transform", `translate(${svgMarginX}, ${svgMarginY})`)
+    .call(yAxis);
+
+  svg
+    .selectAll("rect")
+    .attr("y", (d, i) => {
+      if (i % 12 !== 0) {
+        yOffset += svgHeight90 / 12;
+      } else {
+        yOffset = svgMarginY;
+      }
+      return yOffset;
+    })
+    .attr("x", (d, i) => {
+      if (i !== 0 && i % 12 === 0) {
+        xOffset += svgWidth90 / 263;
+      }
+      return xOffset;
+    })
+    .attr("width", svgWidth90 / 263)
+    .attr("height", svgHeight90 / 12);
+
+  addingLegend(svgMarginY);
+}
+
+window.addEventListener("resize", update);
