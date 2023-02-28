@@ -5,10 +5,10 @@ const svg = d3
   .attr("height", "100%");
 const svgWidth = svg._groups[0][0].clientWidth;
 const svgHeight = svg._groups[0][0].clientHeight;
-const svgWidth90 = svgWidth * 0.85;
-const svgHeight90 = svgHeight * 0.85;
-const svgMarginX = svgWidth * 0.075;
-const svgMarginY = svgHeight90 / 12;
+const svgWidth90 = svgWidth * 0.8;
+const svgHeight90 = svgHeight * 0.8;
+const svgMarginX = svgWidth * 0.1;
+const svgMarginY = svgHeight * 0.1;
 const baseTemp = 8.66; // lowest temp: 1.684, highest: 13.888
 const colors = ["blue", "lightblue", "white", "orange", "red"];
 
@@ -70,7 +70,7 @@ fetch(
         tooltip.remove();
       });
     addingAxis();
-    addingLegend(240);
+    addingLegend(svgMarginY);
   });
 
 function addingAxis() {
@@ -110,11 +110,12 @@ function addingAxis() {
     .call(yAxis);
 }
 
-function addingLegend(legendWidth) {
+function addingLegend(legendHeight) {
+  const cellWidthHeight = legendHeight * 0.6;
   const legend = svg
     .append("g")
     .attr("id", "legend")
-    .attr("transform", `translate(${svgWidth / 2 - legendWidth / 2}, 0)`);
+    .attr("transform", `translate(${svgWidth / 2 - cellWidthHeight * 2.5}, 0)`);
 
   legend
     .selectAll("rect")
@@ -122,10 +123,28 @@ function addingLegend(legendWidth) {
     .enter()
     .append("rect")
     .attr("y", 0)
-    .attr("x", (d, i) => (legendWidth / 5) * i)
-    .attr("width", legendWidth / 5)
-    .attr("height", legendWidth / 5)
+    .attr("x", (d, i) => cellWidthHeight * i)
+    .attr("width", cellWidthHeight)
+    .attr("height", cellWidthHeight)
     .style("fill", (d, i) => colors[i]);
+
+  const xScale = d3
+    .scaleThreshold()
+    .range([
+      0,
+      0,
+      cellWidthHeight,
+      cellWidthHeight * 2,
+      cellWidthHeight * 3,
+      cellWidthHeight * 4,
+      cellWidthHeight * 5,
+    ])
+    .domain([1.5, 4, 6.5, 9, 11.5, 14]);
+  const xAxis = d3.axisBottom(xScale);
+  legend
+    .append("g")
+    .attr("transform", `translate(${0}, ${cellWidthHeight})`)
+    .call(xAxis);
 }
 
 function addingTooltip(x, y, w, h, year, month, temp) {
