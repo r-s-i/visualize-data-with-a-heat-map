@@ -101,13 +101,12 @@ function addingCells(d, svgMarginY, svgWidth90, svgHeight90) {
       const month = t.__data__.month;
       const temp = (t.__data__.variance + baseTemp).toFixed(2);
 
-      t.style.outline = "1px black solid";
-      addingTooltip(x, y, 100, 50, year, month, temp);
+      t.style.opacity = 0.5;
+      addingTooltip(x, y, 120, 60, year, month, temp);
     })
     .on("mouseout", (e) => {
-      e.target.style.outline = "none";
       const tooltip = d3.select("#tooltip");
-
+      e.target.style.opacity = 1;
       tooltip.remove();
     });
 }
@@ -155,8 +154,19 @@ function addingTooltip(x, y, w, h, year, month, temp) {
     .append("foreignObject")
     .attr("width", w)
     .attr("height", h)
-    .html(`<aside id='tooltip'>${year} - ${month} <br> ${temp} ℃ </aside>`)
-    .attr("transform", `translate(${x - w / 2}, ${y - h})`);
+    .html(`<aside id='tooltip'>${year} - ${month} <br> ${temp} ℃ </aside>`);
+
+  if (month <= 6) {
+    g.select("foreignObject").attr(
+      "transform",
+      `translate(${x - w / 2}, ${y + h})`
+    );
+  } else {
+    g.select("foreignObject").attr(
+      "transform",
+      `translate(${x - w / 2}, ${y - h * 2})`
+    );
+  }
 }
 
 function update() {
