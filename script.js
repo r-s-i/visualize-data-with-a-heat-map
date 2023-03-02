@@ -3,6 +3,8 @@ let svg = d3
   .append("svg")
   .attr("width", "100%")
   .attr("height", "100%");
+
+let bodyHeight = d3.select("body").node().getBoundingClientRect().height;
 let svgWidth = svg._groups[0][0].clientWidth;
 let svgHeight = svg._groups[0][0].clientHeight;
 
@@ -145,6 +147,14 @@ function addingLegend(legendHeight) {
     .append("g")
     .attr("transform", `translate(${0}, ${cellWidthHeight})`)
     .call(xAxis);
+
+  legend.selectAll("text").style("fill", (_, i) => {
+    if (bodyHeight <= 600 && i === 0) {
+      return "white";
+    } else {
+      return "black";
+    }
+  });
 }
 
 function addingTooltip(x, y, w, h, year, month, temp) {
@@ -170,6 +180,7 @@ function addingTooltip(x, y, w, h, year, month, temp) {
 }
 
 function update() {
+  bodyHeight = d3.select("body").node().getBoundingClientRect().height;
   svgWidth = svg._groups[0][0].clientWidth;
   svgHeight = svg._groups[0][0].clientHeight;
 

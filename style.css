@@ -19,6 +19,7 @@ body {
   width: 95%;
   margin: auto;
 }
+
 /*Section*/
 section {
   height: 85%;
@@ -36,6 +37,13 @@ svg {
   background: black;
   color: white;
   font-size: 0.8rem;
+}
+@media (max-height: 600px) {
+  #legend text{
+    transform: translate(0.25rem, -1.0rem);
+    font-size: 0.4rem;
+  }
+
 }
 
 /*Header:*/
