@@ -27,6 +27,14 @@ section {
 svg {
   background-color: grey; /*Prod code*/
 }
+@media (max-width: 618px) {
+  #y-axis text {
+    transform: rotate(60deg) translateX(-0.25rem);
+  }
+  #x-axis g:nth-of-type(even) text {
+    transform: translateY(0.75rem);
+  }
+}
 #tooltip {
   display: flex;
   flex-wrap: nowrap;
