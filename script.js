@@ -213,3 +213,20 @@ function update() {
 }
 
 window.addEventListener("resize", update);
+
+// Non-d3 related code:
+const title = document.getElementById("title");
+const description = document.getElementById("description");
+const arrow = document.getElementById("arrow");
+
+title.addEventListener("mouseup", () => {
+  const isArrowUp = arrow.textContent.includes("↑");
+
+  if (isArrowUp) {
+    arrow.textContent = "↓";
+  } else {
+    arrow.textContent = "↑";
+  }
+
+  description.classList.toggle("visible");
+});
