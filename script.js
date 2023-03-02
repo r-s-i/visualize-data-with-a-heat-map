@@ -226,6 +226,7 @@ function update() {
 window.addEventListener("resize", update);
 
 // Non-d3 related code:
+// For header:
 const title = document.getElementById("title");
 const description = document.getElementById("description");
 const arrow = document.getElementById("arrow");
@@ -240,4 +241,16 @@ title.addEventListener("mouseup", () => {
   }
 
   description.classList.toggle("visible");
+});
+
+// For footer:
+const test = document.getElementById("tests");
+const fccTest = document.getElementById("fcc_test_suite_wrapper");
+fccTest.style.visibility = "hidden";
+test.addEventListener("mouseup", (i) => {
+  if (fccTest.style.visibility === "hidden") {
+    fccTest.style.visibility = "visible";
+  } else {
+    fccTest.style.visibility = "hidden";
+  }
 });

@@ -66,7 +66,7 @@ h2 {
   background-color: rgba(245, 245, 245);
   transition: opacity 0.25s ease-in-out;
   position: relative;
-  z-index: 100000;
+  z-index: 10;
 }
 h2.visible {
   opacity: 1;
@@ -79,6 +79,17 @@ h2.visible {
 
 /*Footer:*/
 footer {
-  height: 10%
+  height: 10%;
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  overflow: hidden;
 }
+button {
+  font-size: 0.75rem;
+  min-width: 6rem;
+}
+
 
