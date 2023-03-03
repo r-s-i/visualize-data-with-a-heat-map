@@ -1,6 +1,6 @@
 # Global Land-Surface Temperature Per Month
 
-This is my answer to freeCodeCamp's Visualize Data with a Heat Map project. It shows data from 1753 to 2015. It has a base temperature of 8.66℃. With hovering over the rects, a tooltip with details will appear. One can also tap the rects on a touch device.
+This is my answer to freeCodeCamp's Visualize Data with a Heat Map project. It shows data from 1753 to 2015. It has a base temperature of 8.66 ℃. With hovering over the rects, a tooltip with details will appear. One can also tap the rects on a touch device.
 
 ## Getting Started
 
