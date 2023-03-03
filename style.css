@@ -37,7 +37,7 @@ h1 {
 h2 {
   visibility: hidden;
   opacity: 0;
-  background-color: rgba(245, 245, 245);
+  background-color: rgb(245, 245, 245);
   transition: opacity 0.25s ease-in-out;
   position: relative;
   z-index: 10;
@@ -57,7 +57,7 @@ section {
   height: 85%;
 }
 svg {
-  background-color: grey; /*Prod code*/
+  background-color: grey;
 }
 @media (max-width: 618px) {
   #y-axis text {
