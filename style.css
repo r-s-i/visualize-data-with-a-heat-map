@@ -20,6 +20,37 @@ body {
   margin: auto;
 }
 
+/*Header:*/
+header {
+  text-align: center;
+  height: 15%;
+  padding: 0 2rem;  
+}
+h1 {
+  display: inline-block;
+  font-size: 1.5rem;
+}
+#arrow {
+  margin: 0;
+  padding: 0;
+  font-size: 1.5rem;
+}
+h2 {
+  opacity: 0;
+  background-color: rgba(245, 245, 245);
+  transition: opacity 0.25s ease-in-out;
+  position: relative;
+  z-index: 10;
+}
+h2.visible {
+  opacity: 1;
+}
+@media (max-height: 585px), (max-width: 585px) {
+  h1, h2, #arrow {
+    font-size: 0.9rem;
+  }
+}
+
 /*Section*/
 section {
   height: 85%;
@@ -52,37 +83,6 @@ svg {
     font-size: 0.4rem;
   }
 
-}
-
-/*Header:*/
-header {
-  text-align: center;
-  height: 15%;
-  padding: 0 2rem;  
-}
-h1 {
-  display: inline-block;
-  font-size: 1.5rem;
-}
-#arrow {
-  margin: 0;
-  padding: 0;
-  font-size: 1.5rem;
-}
-h2 {
-  opacity: 0;
-  background-color: rgba(245, 245, 245);
-  transition: opacity 0.25s ease-in-out;
-  position: relative;
-  z-index: 10;
-}
-h2.visible {
-  opacity: 1;
-}
-@media (max-height: 585px), (max-width: 585px) {
-  h1, h2, #arrow {
-    font-size: 0.9rem;
-  }
 }
 
 /*Footer:*/
