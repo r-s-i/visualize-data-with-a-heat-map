@@ -36,6 +36,7 @@ h1 {
   font-size: 1.5rem;
 }
 h2 {
+  visibility: hidden;
   opacity: 0;
   background-color: rgba(245, 245, 245);
   transition: opacity 0.25s ease-in-out;
@@ -43,6 +44,7 @@ h2 {
   z-index: 10;
 }
 h2.visible {
+  visibility: visible;
   opacity: 1;
 }
 @media (max-height: 585px), (max-width: 585px) {
