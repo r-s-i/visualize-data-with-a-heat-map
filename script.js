@@ -226,10 +226,11 @@ function update() {
 window.addEventListener("resize", update);
 
 // Non-d3 related code:
+const $ = (id) => document.getElementById(id);
 // For header:
-const title = document.getElementById("title");
-const description = document.getElementById("description");
-const arrow = document.getElementById("arrow");
+const title = $("title");
+const description = $("description");
+const arrow = $("arrow");
 
 title.addEventListener("mouseup", () => {
   const isArrowUp = arrow.textContent.includes("↑");
@@ -244,8 +245,8 @@ title.addEventListener("mouseup", () => {
 });
 
 // For footer:
-const test = document.getElementById("tests");
-const fccTest = document.getElementById("fcc_test_suite_wrapper");
+const test = $("tests");
+const fccTest = $("fcc_test_suite_wrapper");
 fccTest.style.visibility = "hidden";
 test.addEventListener("mouseup", (i) => {
   if (fccTest.style.visibility === "hidden") {
