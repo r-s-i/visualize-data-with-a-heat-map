@@ -1,6 +1,5 @@
 /*General:*/
 * {
-  /*outline: 1px solid red;*/
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -103,7 +102,6 @@ svg {
   opacity: 1;
   visibility: visible;
 }
-
 
 /*Footer:*/
 footer {
