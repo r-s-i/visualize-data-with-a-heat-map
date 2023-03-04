@@ -90,9 +90,9 @@ svg {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 50%;
+  width: 70%;
   height: 50%;
-  font-size: 1.25rem;
+  overflow: auto;
   padding: 1rem;
   background: whitesmoke;
   opacity: 0;
